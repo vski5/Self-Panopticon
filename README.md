@@ -1,5 +1,6 @@
 # 立项目的
-
+灵感来自于边沁的Panopticon（环形监狱）理论，有关每个人向其他人展示自己包含todolist完成情况与番茄学习法时间表的主页。
+Inspired by Bianchin's Panopticon theory about each person showing others their home page containing todolist completion with a tomato learning schedule.
 # 技术
 基础思路是Golang API服务器，连接到一个 _React_ 前端页面。
 
