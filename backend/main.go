@@ -2,19 +2,20 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func router() {
+func Router() {
 	//生成路由器
 	r := gin.Default()
 	//注册路由
 	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello, world!",
-		})
+		c.String(http.StatusOK, "ok")
 	})
+	//启动路由，启动的是完整engine
+	r.Run()
 }
 
 func main() {
