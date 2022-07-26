@@ -14,7 +14,8 @@ func Router() {
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "ok")
 	})
-	//启动路由，启动的是完整engine
+	//启动路由
+	//gin 源码中的engine.Run()
 	r.Run()
 }
 
