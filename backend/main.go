@@ -1,9 +1,8 @@
 package main
 
 import (
-	"log"
+	"backend/backend/Middleware"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,21 +19,35 @@ func Router() {
 	r.Run()
 }
 
-// StatCost 是一个统计耗时请求耗时的中间件
-func StatCost() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		start := time.Now()
-		c.Set("name", "user") // 可以通过c.Set在请求上下文中设置值，后续的处理函数能够取到该值
-		// 调用该请求的剩余处理程序
-		c.Next()
-		// 不调用该请求的剩余处理程序
-		// c.Abort()
-		// 计算耗时
-		cost := time.Since(start)
-		log.Println(cost)
+//路由组，将路由分组，方便统一配置路由前缀
+func RouterGroup() {
+	//生成路由器
+	r := gin.Default()
+
+	//注册路由组userGroup，将路由分组，方便统一配置路由前缀
+	userGroup := r.Group("/v1")
+	{
+		userGroup.GET("/index", func(c *gin.Context) {})
+		userGroup.GET("/login", func(c *gin.Context) {})
+		userGroup.POST("/login", func(c *gin.Context) {})
+
 	}
+
+	//注册路由组v1
+	v1 := r.Group("/v1")
+	{
+		v1.GET("/", func(c *gin.Context) {
+			c.String(http.StatusOK, "v1")
+		})
+	}
+
+	//启动路由
+	//gin 源码中的engine.Run()
+	r.Run()
 }
-func main() {
+
+//注册一个针对user的路由
+func userGroup() {
 	router := gin.Default()
 
 	/*注册路由，设置路由规则，路由规则是一个函数：func(c *gin.Context)，
@@ -46,22 +59,21 @@ func main() {
 		//获取路由参数，参数名称是name，参数值是c.Query("name")
 		c.String(http.StatusOK, "%s is %s", name, action)
 	})
+}
 
-	//路由组，将路由分组，方便统一配置路由前缀
-	userGroup := router.Group("/user")
-	{
-		userGroup.GET("/index", func(c *gin.Context) {})
-		userGroup.GET("/login", func(c *gin.Context) {})
-		userGroup.POST("/login", func(c *gin.Context) {})
-
-	}
-
-	//为没有配置处理函数的路由添加处理程序，默认情况下它返回404代码
-	//此处为没有匹配到路由的请求都返回views/404.html页面。
+//为没有配置处理函数的路由添加处理程序，默认情况下它返回404代码
+//此处为没有匹配到路由的请求都返回views/404.html页面。
+func NotFound() {
+	router := gin.Default()
 	router.NoRoute(func(c *gin.Context) {
 		c.HTML(http.StatusNotFound, "views/404.html", nil)
 	})
+}
 
+func main() {
+	router := gin.Default()
+	//StatCost 是一个统计耗时请求耗时的中间件
+	Middleware.StatCost()
 	//启动路由，默认监听8080端口
 	router.Run(":8000")
 }
