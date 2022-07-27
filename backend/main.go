@@ -2,6 +2,7 @@ package main
 
 import (
 	"backend/backend/Middleware"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -71,11 +72,20 @@ func NotFound() {
 }
 
 func main() {
-	router := gin.Default()
+	// 新建一个没有任何默认中间件的路由
+	r := gin.New()
+	// 注册一个全局中间件StatCost，用于统计请求耗时
+	r.Use(Middleware.StatCost())
+
+	r.GET("/test", func(c *gin.Context) {
+		name := c.MustGet("name").(string) // 从上下文取值
+		log.Println(name)
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Hello world!",
+		})
+	})
 
 	//启动路由，默认监听8080端口
-	router.Run(":8000")
+	r.Run(":8000")
 
-	//StatCost 是一个统计耗时请求耗时的中间件
-	Middleware.StatCost()
 }
