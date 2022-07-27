@@ -72,8 +72,10 @@ func NotFound() {
 
 func main() {
 	router := gin.Default()
-	//StatCost 是一个统计耗时请求耗时的中间件
-	Middleware.StatCost()
+
 	//启动路由，默认监听8080端口
 	router.Run(":8000")
+
+	//StatCost 是一个统计耗时请求耗时的中间件
+	Middleware.StatCost()
 }
