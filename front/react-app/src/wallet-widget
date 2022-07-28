@@ -1,0 +1,22 @@
+
+      import { Widget } from '@maticnetwork/wallet-widget'
+
+      const widget = new Widget({
+        target: '',
+        appName: 'login',
+        autoShowTime: 0,
+        position: 'center',
+        height: 630,
+        width: 540,
+        overlay: false,
+        network: 'mainnet',
+        closable: true,
+      });
+
+      widget.create()
+    
+      widget.show()
+
+      
+      export default WidgetApp;
+    
