@@ -21,7 +21,9 @@ Inspired by Bianchin's Panopticon theory about each person showing others their 
 
 ## 其他
 ### 约定：
-- 端口：8080
+- 前端React端口：3000
+- 后端传输端口：3001
+- 例如http://localhost:3001/notes
 
 # 产品设计
 ## 用户界面
