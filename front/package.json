@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "@maticnetwork/wallet-widget": "^1.3.12",
     "axios": "^0.27.2"
   }
 }
