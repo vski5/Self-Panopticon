@@ -37,7 +37,8 @@ func prepareQueryDemo() {
 	}
 }
 
-//插入、更新和删除操作的预处理十分类似，这里以插入操作的预处理为例：
+//插入、更新。删除操作的预处理类似
+//先写一点
 // 预处理插入示例
 func prepareInsertDemo() {
 	sqlStr := "insert into user(name, age) values (?,?)"
@@ -47,12 +48,12 @@ func prepareInsertDemo() {
 		return
 	}
 	defer stmt.Close()
-	_, err = stmt.Exec("小王子", 18)
+	_, err = stmt.Exec("名字1", 18)
 	if err != nil {
 		fmt.Printf("insert failed, err:%v\n", err)
 		return
 	}
-	_, err = stmt.Exec("沙河娜扎", 18)
+	_, err = stmt.Exec("名字2", 18)
 	if err != nil {
 		fmt.Printf("insert failed, err:%v\n", err)
 		return
