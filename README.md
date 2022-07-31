@@ -15,7 +15,8 @@ Inspired by Bianchin's Panopticon theory about each person showing others their 
 - 基本框架来自于Gin
 - 但用 gorilla/mux 作为请求路由器Request router
 ### 其他：
-- 用Logrus记录日志
+- 用Zap记录日志
+- 用viper进行配置管理
 
 ## 前端部分：
 - Sketch2Code生成前端HTML代码
