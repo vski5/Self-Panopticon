@@ -6,7 +6,9 @@ Inspired by Bianchin's Panopticon theory about each person showing others their 
 
 ## 后端部分:
 ### 数据库：
-- Docker-MySQL作为数据库
+- Docker-MySQL作为数据库：
+	- 使用SQL预处理，杜绝了SQL注入问题
+	- 使用SQLC进行MySQL的CRUD
 - dbdiagram.io生成数据库语句
 - GORM作为ORM，与数据库进行交互
 ### 基础框架：
@@ -24,6 +26,7 @@ Inspired by Bianchin's Panopticon theory about each person showing others their 
 - 前端React端口：3000
 - 后端传输端口：3001
 - 例如http://localhost:3001/notes
+- 数据库端口3307/tcp -> 0.0.0.0:3307
 
 # 产品设计
 ## 用户界面
