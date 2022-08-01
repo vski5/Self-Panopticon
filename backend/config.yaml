@@ -1,0 +1,23 @@
+app:
+  name: "Self-Panopticon"
+  mode: "dev"
+  port: 8081
+
+mysql:
+  host: "127.0.0.1"
+  port: 13306
+  user: "root"
+  password: "root1234"
+  dbname: "sql_demo"
+
+redis:
+  host: "127.0.0.1"
+  port: 16379
+  db: 0
+
+log:
+  level: "fixbug"
+  filename: "Self-Panopticon.log"
+  max_size: 100
+  max_age: 30
+  max_backups: 7
