@@ -30,7 +30,7 @@ func Init(cfg *setting.LogConfig, mode string) (err error) {
 		viper.GetInt("log.max_backups"))
 	encoder := getEncoder(cfg)
 	var l = new(zapcore.Level)
-	err = l.UnmarshalText([]byte(viper.GetString(log.level)))
+	err = l.UnmarshalText([]byte(viper.GetString("log.level")))
 	if err != nil {
 		return
 	}
