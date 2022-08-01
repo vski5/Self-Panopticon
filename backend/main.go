@@ -1,8 +1,11 @@
 package main
 
 import (
+	"backend/backend/logger"
 	"backend/backend/settings"
 	"fmt"
+
+	"go.uber.org/zap"
 )
 
 func main() {
@@ -16,6 +19,8 @@ func main() {
 		fmt.Printf("logger初始化日志错了,err:%v\n", err)
 		return
 	}
+	//拿zap库中全局定义的logger
+	zap.L().Debug("logger init ok")
 	//初始化mysql
 	if err := mysql.Init(); err != nil {
 		fmt.Printf("mysql初始化日志错了,err:%v\n", err)
