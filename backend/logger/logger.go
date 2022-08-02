@@ -10,37 +10,62 @@ import (
 	"strings"
 	"time"
 
+	"encoding/json"
+	"io/ioutil"
+
 	"github.com/gin-gonic/gin"
 	"github.com/natefinch/lumberjack"
-	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
-//全局logger,不需要了
+// Config 整个项目的配置
+type Config struct {
+	Mode       string `json:"mode"`
+	Port       int    `json:"port"`
+	*LogConfig `json:"log"`
+}
+
+// LogConfig 日志配置
+type LogConfig struct {
+	Level      string `json:"level"`
+	Filename   string `json:"filename"`
+	MaxSize    int    `json:"maxsize"`
+	MaxAge     int    `json:"max_age"`
+	MaxBackups int    `json:"max_backups"`
+}
+
+// Conf 全局配置变量
+var Conf = new(Config)
+
+// Init 初始化配置；从指定文件加载配置文件
+func Init(filePath string) error {
+	b, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(b, Conf)
+}
+
+//全局logger,
 var lg *zap.Logger
 
-//Init 初始化logger
-func Init(cfg, mode string) (err error) {
-	//来自于config.yaml的配置,用viper获取
-	writeSyncer := getLogWriter(
-		viper.GetString("log.filename"),
-		viper.GetInt("log.max_size"),
-		viper.GetInt("log.max_age"),
-		viper.GetInt("log.max_backups"))
-	encoder := getEncoder(cfg)
+// InitLogger 初始化Logger。
+func InitLogger(cfg *LogConfig) (err error) {
+	writeSyncer := getLogWriter(cfg.Filename, cfg.MaxSize, cfg.MaxBackups, cfg.MaxAge)
+	encoder := getEncoder()
 	var l = new(zapcore.Level)
-	err = l.UnmarshalText([]byte(viper.GetString("log.level")))
+	err = l.UnmarshalText([]byte(cfg.Level))
 	if err != nil {
 		return
 	}
-	core := zapcore.NewCore(encoder, writeSyncer, *l)
-	//准备替换zap库中的logger
-	lg = zap.New(core, zap.AddCaller())
-	zap.ReplaceGlobals(lg)
+	core := zapcore.NewCore(encoder, writeSyncer, l)
 
+	lg = zap.New(core, zap.AddCaller())
+	zap.ReplaceGlobals(lg) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
 	return
 }
+
 func getEncoder() zapcore.Encoder {
 	encoderConfig := zap.NewProductionEncoderConfig()
 	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
