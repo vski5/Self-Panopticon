@@ -1,7 +1,7 @@
 package logger
 
-//用zap日志库实现日志
 import (
+	"backend/backend/config"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -10,48 +10,16 @@ import (
 	"strings"
 	"time"
 
-	"encoding/json"
-	"io/ioutil"
-
 	"github.com/gin-gonic/gin"
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
-// Config 整个项目的配置
-type Config struct {
-	Mode       string `json:"mode"`
-	Port       int    `json:"port"`
-	*LogConfig `json:"log"`
-}
-
-// LogConfig 日志配置
-type LogConfig struct {
-	Level      string `json:"level"`
-	Filename   string `json:"filename"`
-	MaxSize    int    `json:"maxsize"`
-	MaxAge     int    `json:"max_age"`
-	MaxBackups int    `json:"max_backups"`
-}
-
-// Conf 全局配置变量
-var Conf = new(Config)
-
-// Init 初始化配置；从指定文件加载配置文件
-func Init(filePath string) error {
-	b, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		return err
-	}
-	return json.Unmarshal(b, Conf)
-}
-
-//全局logger,
 var lg *zap.Logger
 
-// InitLogger 初始化Logger。
-func InitLogger(cfg *LogConfig) (err error) {
+// InitLogger 初始化Logger
+func Init(cfg *config.LogConfig) (err error) {
 	writeSyncer := getLogWriter(cfg.Filename, cfg.MaxSize, cfg.MaxBackups, cfg.MaxAge)
 	encoder := getEncoder()
 	var l = new(zapcore.Level)
@@ -63,7 +31,7 @@ func InitLogger(cfg *LogConfig) (err error) {
 
 	lg = zap.New(core, zap.AddCaller())
 	zap.ReplaceGlobals(lg) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
-	return
+	return err
 }
 
 func getEncoder() zapcore.Encoder {
