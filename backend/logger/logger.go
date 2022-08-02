@@ -21,8 +21,7 @@ import (
 var lg *zap.Logger
 
 //Init 初始化logger
-
-func Init(cfg *viper.Viper, mode string) (err error) {
+func Init(cfg, mode string) (err error) {
 	//来自于config.yaml的配置,用viper获取
 	writeSyncer := getLogWriter(
 		viper.GetString("log.filename"),
