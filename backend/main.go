@@ -1,5 +1,6 @@
 package main
 
+//完整的脚手架，终于搭建完毕。
 import (
 	"backend/backend/dao/mysql"
 	"backend/backend/dao/redis"
