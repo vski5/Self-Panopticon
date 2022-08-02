@@ -29,3 +29,8 @@ func Init() (err error) {
 	db.SetMaxIdleConns(viper.GetInt("mysql.max_idle_conns"))
 	return
 }
+
+//对外封装一个close方法
+func Close() {
+	_ = db.Close()
+}

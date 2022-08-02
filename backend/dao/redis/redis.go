@@ -27,3 +27,8 @@ func Init() (err error) {
 	}
 	return nil
 }
+
+//对外包装关闭方法
+func Close() {
+	_ = rdb.Close()
+}
