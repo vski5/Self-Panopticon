@@ -20,21 +20,25 @@ var lg *zap.Logger
 
 // InitLogger 初始化Logger
 func Init() (err error) {
+	// 初始化日志，getLogWriter是一个函数，用于创建日志文件相关配置
 	writeSyncer := getLogWriter(
 		viper.GetString("log.filename"),
 		viper.GetInt("log.max_size"),
 		viper.GetInt("log.max_backups"),
 		viper.GetInt("log.max_age"),
 	)
-
+	//getEncoder() 用于创建日志格式化器
 	encoder := getEncoder()
+	//new(zapcore.Level)用于创建日志级别
 	var l = new(zapcore.Level)
+	//获取日志级别，UnmarshalText用于将字符串转换为日志级别
 	err = l.UnmarshalText([]byte(viper.GetString("log.level")))
 	if err != nil {
 		return
 	}
+	//zapcore.NewCore是一个函数，用于创建日志核心，其中包含日志格式化器和日志写入器，还有日志级别l
 	core := zapcore.NewCore(encoder, writeSyncer, l)
-
+	//	zap.New(core)用于创建日志，其中包含日志核心，zap.AddCaller()用于设置日志输出的文件名和行号
 	lg = zap.New(core, zap.AddCaller())
 	zap.ReplaceGlobals(lg) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
 	return err

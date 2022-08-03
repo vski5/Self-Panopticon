@@ -84,6 +84,5 @@ func main() {
 	if err := srv.Shutdown(ctx); err != nil {
 		zap.L().Fatal("Server Shutdown: ", zap.Error(err))
 	}
-
-	zap.L().Info("Server exiting")
+	zap.L().Info("Server exiting") //服务器退出,日志记录
 }
