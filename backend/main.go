@@ -1,6 +1,5 @@
 package main
 
-//完整的脚手架，终于搭建完毕。
 import (
 	"backend/backend/dao/mysql"
 	"backend/backend/dao/redis"
@@ -55,6 +54,7 @@ func main() {
 
 	//注册路由
 	r := routes.Setup()
+
 	//启动服务 and 优雅关机
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%d", viper.GetInt("app.port")),
