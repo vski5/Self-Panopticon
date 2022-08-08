@@ -34,6 +34,7 @@ func Init() (err error) {
 	err = l.UnmarshalText([]byte(viper.GetString("log.level")))
 
 	if err != nil {
+		//zap.L().Error("connect DB failed, err:%v\n", zap.Error(err))
 		return nil
 	}
 

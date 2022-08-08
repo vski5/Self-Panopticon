@@ -21,8 +21,14 @@ func Init() (err error) {
 	// 也可以使用MustConnect连接不成功就panic
 	db, err = sqlx.Connect("mysql", dsn)
 	if err != nil {
+<<<<<<< HEAD
 		//zap.L().Error("connect DB failed, err:%v\n", zap.Error(err))
 		return nil
+=======
+		zap.L().Error("connect DB failed, err:%v\n", zap.Error(err))
+		return
+
+>>>>>>> 87dd5db1b643e2ff6b987e514be6122324d1ec27
 	}
 	db.SetMaxOpenConns(viper.GetInt("mysql.max_open_conns"))
 	db.SetMaxIdleConns(viper.GetInt("mysql.max_idle_conns"))
