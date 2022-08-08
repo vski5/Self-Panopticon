@@ -27,5 +27,5 @@ func Init() (err error) {
 	viper.OnConfigChange(func(e fsnotify.Event) { // 配置文件变化时重新加载配置
 		fmt.Println("Config file changed:", e.Name) // 打印配置文件变化的文件名,e.Name是配置文件的路径
 	})
-	return
+	return nil
 }
