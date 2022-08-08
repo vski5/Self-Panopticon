@@ -1,6 +1,15 @@
 package logger
 
 import (
+	"net"
+	"net/http"
+	"net/http/httputil"
+	"os"
+	"runtime/debug"
+	"strings"
+	"time"
+
+	"github.com/gin-gonic/gin"
 	"github.com/natefinch/lumberjack"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -22,14 +31,14 @@ func Init() (err error) {
 	encoder := getEncoder()
 	var l = new(zapcore.Level)
 	err = l.UnmarshalText([]byte(viper.GetString("log.level")))
-	if err != nil {
-		return
-	}
 	core := zapcore.NewCore(encoder, writeSyncer, l)
 	//自拟zap的模式
 	lg = zap.New(core, zap.AddCaller())
 	zap.ReplaceGlobals(lg) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
-	return err
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func getEncoder() zapcore.Encoder {
@@ -52,7 +61,6 @@ func getLogWriter(filename string, maxSize, maxBackup, maxAge int) zapcore.Write
 	return zapcore.AddSync(lumberJackLogger)
 }
 
-/*
 // GinLogger 接收gin框架默认的日志
 func GinLogger() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -121,4 +129,3 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 		c.Next()
 	}
 }
-*/
