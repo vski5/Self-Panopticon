@@ -17,8 +17,11 @@ func Init() (err error) {
 	err = viper.ReadInConfig() // 查找并读取配置文件
 	if err != nil {            // 处理读取配置文件的错误
 		fmt.Printf("出错的函数:viper.ReadInConfig() warning err:%v\n", err)
+
 		return
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		//return和panic不兼容，要写新的if-else
+		//panic(fmt.Errorf("Fatal error config file: %s \n", err))
+
 	}
 	viper.WatchConfig()                           // 监控配置文件变化
 	viper.OnConfigChange(func(e fsnotify.Event) { // 配置文件变化时重新加载配置

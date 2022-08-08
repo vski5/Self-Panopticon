@@ -55,6 +55,7 @@ func main() {
 
 	//注册路由
 	r := routes.Setup()
+
 	//启动服务 and 优雅关机
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%d", viper.GetInt("app.port")),
