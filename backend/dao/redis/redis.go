@@ -23,7 +23,7 @@ func Init() (err error) {
 	})
 	_, err = rdb.Ping().Result()
 	if err != nil {
-		return
+		return nil
 	}
 	return nil
 }
