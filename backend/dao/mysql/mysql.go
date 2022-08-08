@@ -24,6 +24,7 @@ func Init() (err error) {
 	if err != nil {
 		zap.L().Error("connect DB failed, err:%v\n", zap.Error(err))
 		return
+
 	}
 	db.SetMaxOpenConns(viper.GetInt("mysql.max_open_conns"))
 	db.SetMaxIdleConns(viper.GetInt("mysql.max_idle_conns"))
