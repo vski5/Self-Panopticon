@@ -16,9 +16,10 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
+//只在此处用到，不需要全局使用
 var lg *zap.Logger
 
-// InitLogger 初始化Logger
+// Init 初始化Logger
 func Init() (err error) {
 
 	writeSyncer := getLogWriter(
@@ -31,13 +32,16 @@ func Init() (err error) {
 	encoder := getEncoder()
 	var l = new(zapcore.Level)
 	err = l.UnmarshalText([]byte(viper.GetString("log.level")))
+
+	if err != nil {
+		return nil
+	}
+
 	core := zapcore.NewCore(encoder, writeSyncer, l)
 	//自拟zap的模式
 	lg = zap.New(core, zap.AddCaller())
 	zap.ReplaceGlobals(lg) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
-	if err != nil {
-		return err
-	}
+
 	return nil
 }
 
@@ -70,7 +74,7 @@ func GinLogger() gin.HandlerFunc {
 		c.Next()
 
 		cost := time.Since(start)
-		lg.Info(path,
+		zap.L().Info(path,
 			zap.Int("status", c.Writer.Status()),
 			zap.String("method", c.Request.Method),
 			zap.String("path", path),
@@ -101,7 +105,7 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 
 				httpRequest, _ := httputil.DumpRequest(c.Request, false)
 				if brokenPipe {
-					lg.Error(c.Request.URL.Path,
+					zap.L().Error(c.Request.URL.Path,
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 					)
@@ -112,13 +116,13 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 				}
 
 				if stack {
-					lg.Error("[Recovery from panic]",
+					zap.L().Error("[Recovery from panic]",
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 						zap.String("stack", string(debug.Stack())),
 					)
 				} else {
-					lg.Error("[Recovery from panic]",
+					zap.L().Error("[Recovery from panic]",
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 					)

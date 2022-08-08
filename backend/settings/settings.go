@@ -20,7 +20,7 @@ func Init() (err error) {
 
 		return
 		//return和panic不兼容，要写新的if-else
-		//panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		panic(fmt.Errorf("Fatal error config file: %s \n", err))
 
 	}
 	viper.WatchConfig()                           // 监控配置文件变化

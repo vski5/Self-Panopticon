@@ -2,10 +2,7 @@ module backend
 
 go 1.17
 
-require (
-	github.com/gin-contrib/zap v0.0.2
-	github.com/gin-gonic/gin v1.8.1
-)
+require github.com/gin-gonic/gin v1.8.1
 
 require (
 	github.com/onsi/ginkgo v1.16.5 // indirect
