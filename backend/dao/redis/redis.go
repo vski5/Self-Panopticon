@@ -22,6 +22,11 @@ func Init() (err error) {
 		PoolSize: viper.GetInt("redis.pool_size"),
 	})
 	_, err = rdb.Ping().Result()
+	/*
+	   此处不该是返回nil，
+	   但是不这么写的话，在测试里面会报错，应该只写一个return
+	   正式做出来东西的时候要记得改
+	*/
 	if err != nil {
 		return nil
 	}

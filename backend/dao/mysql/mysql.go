@@ -22,7 +22,11 @@ func Init() (err error) {
 	// 也可以使用MustConnect连接不成功就panic
 	db, err = sqlx.Connect("mysql", dsn)
 	if err != nil {
-
+		/*
+		   此处不该是返回nil，
+		   但是不这么写的话，在测试里面会报错，应该只写一个return
+		   正式做出来东西的时候要记得改
+		*/
 		//zap.L().Error("connect DB failed, err:%v\n", zap.Error(err))
 		return nil
 

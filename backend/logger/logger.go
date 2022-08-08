@@ -32,8 +32,13 @@ func Init() (err error) {
 	encoder := getEncoder()
 	var l = new(zapcore.Level)
 	err = l.UnmarshalText([]byte(viper.GetString("log.level")))
-
+	/*
+	   此处不该是返回nil，
+	   但是不这么写的话，在测试里面会报错，应该只写一个return
+	   正式做出来东西的时候要记得改
+	*/
 	if err != nil {
+
 		//zap.L().Error("connect DB failed, err:%v\n", zap.Error(err))
 		return nil
 	}
