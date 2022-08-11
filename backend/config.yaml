@@ -2,7 +2,7 @@ app:
   name: "Self-Panopticon"
   mode: "dev"
   port: 8081
-
+  version: "0.0.1"
 mysql:
   host: "127.0.0.1"
   port: 13306

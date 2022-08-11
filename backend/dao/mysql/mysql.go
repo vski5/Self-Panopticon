@@ -28,7 +28,7 @@ func Init() (err error) {
 		   正式做出来东西的时候要记得改
 		*/
 		//zap.L().Error("connect DB failed, err:%v\n", zap.Error(err))
-		return nil
+		//return
 
 		zap.L().Error("connect DB failed, err:%v\n", zap.Error(err))
 		return

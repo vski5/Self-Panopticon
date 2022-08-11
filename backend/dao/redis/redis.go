@@ -28,9 +28,9 @@ func Init() (err error) {
 	   正式做出来东西的时候要记得改
 	*/
 	if err != nil {
-		return nil
+		return
 	}
-	return nil
+	return
 }
 
 //对外包装关闭方法

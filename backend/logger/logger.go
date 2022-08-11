@@ -39,8 +39,8 @@ func Init() (err error) {
 	*/
 	if err != nil {
 
-		//zap.L().Error("connect DB failed, err:%v\n", zap.Error(err))
-		return nil
+		zap.L().Error("connect DB failed, err:%v\n", zap.Error(err))
+		return
 	}
 
 	core := zapcore.NewCore(encoder, writeSyncer, l)
@@ -48,7 +48,7 @@ func Init() (err error) {
 	lg = zap.New(core, zap.AddCaller())
 	zap.ReplaceGlobals(lg) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
 
-	return nil
+	return
 }
 
 func getEncoder() zapcore.Encoder {
