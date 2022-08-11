@@ -31,7 +31,12 @@ func Init() (err error) {
 
 	encoder := getEncoder()
 	var l = new(zapcore.Level)
-	err = l.UnmarshalText([]byte(viper.GetString("log.level")))
+	errlevel := l.UnmarshalText([]byte(viper.GetString("log.level")))
+
+	core := zapcore.NewCore(encoder, writeSyncer, l)
+	//自拟zap的模式
+	lg = zap.New(core, zap.AddCaller())
+	zap.ReplaceGlobals(lg) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
 	/*
 	   此处不该是返回nil，
 	   但是不这么写的话，在测试里面会报错，应该只写一个return
@@ -39,15 +44,9 @@ func Init() (err error) {
 	*/
 	if err != nil {
 
-		zap.L().Error("connect DB failed, err:%v\n", zap.Error(err))
+		zap.L().Error("connect DB failed, err:%v\n", zap.Error(errlevel))
 		return
 	}
-
-	core := zapcore.NewCore(encoder, writeSyncer, l)
-	//自拟zap的模式
-	lg = zap.New(core, zap.AddCaller())
-	zap.ReplaceGlobals(lg) // 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
-
 	return
 }
 
